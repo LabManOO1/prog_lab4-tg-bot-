@@ -6,6 +6,7 @@ from aiogram.fsm.context import FSMContext
 
 import keyboard as kb
 from API_func import *
+from Inline_keyboard_bilder import create_inline_kb
 
 
 router = Router()
@@ -24,26 +25,36 @@ async def cmd_start(message: Message):
 async def cmd_info(message: Message):
     await message.answer('Вы нажали на кнопку информации')
 
+
 @router.message(F.text == 'Топ 20 популярных игр')
 async def cmd_info(message: Message):
     res = top_games()
     await message.answer('\n'.join(res))
 
-@router.message(F.text == 'Конкретная игра')
+
+@router.message(F.text == 'Информация о конкретной игре')
 async def cmd_info(message: Message, state: FSMContext):
     await state.set_state(GameName.game_name)
     await message.answer('Введите название игры')
+
 
 @router.message(GameName.game_name)
 async def name_game(message: Message, state: FSMContext):
     await state.update_data(game_name=message.text)
     data = await state.get_data()
-    await message.answer(f'Вы ввели игру: {data["game_name"]}')
+    if get_description_game(data['game_name']) == '':
+        await message.answer('Игра не найдена!')
+    else:
+        await message.answer(get_description_game(data['game_name']))
+
     await state.clear()
+
 
 @router.message(F.text == 'Жанр')
 async def cmd_info(message: Message):
-    await message.answer('Выберете жанр', reply_markup=kb.genre)
+    inline_keyboard = create_inline_kb(2, *get_category_list())
+    await message.answer('Выберете жанр:', reply_markup=inline_keyboard)
+
 
 @router.callback_query(F.data == 'shooters')
 async def shooters(callback: CallbackQuery):
@@ -51,8 +62,7 @@ async def shooters(callback: CallbackQuery):
     await callback.message.answer('стрелялки')
 
 
-
-
 @router.message(F.text == 'Платформа')
 async def cmd_info(message: Message):
-    await message.answer('Выберете платформу', reply_markup=kb.platform)
+    inline_keyboard = create_inline_kb(1, *get_platforms_list())
+    await message.answer('Выберете платформу:', reply_markup=inline_keyboard)
