@@ -1,7 +1,7 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 
 
-main = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text='Все игры')], [KeyboardButton(text='Конкретная игра')],
+main = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text='Топ 20 популярных игр')], [KeyboardButton(text='Конкретная игра')],
                                      [KeyboardButton(text="Жанр"), KeyboardButton(text='Платформа')]],
                            resize_keyboard=True, input_field_placeholder='Выберете что нужно вывести...')
 

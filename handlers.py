@@ -5,6 +5,7 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
 
 import keyboard as kb
+from API_func import *
 
 
 router = Router()
@@ -23,9 +24,10 @@ async def cmd_start(message: Message):
 async def cmd_info(message: Message):
     await message.answer('Вы нажали на кнопку информации')
 
-@router.message(F.text == 'Все игры')
+@router.message(F.text == 'Топ 20 популярных игр')
 async def cmd_info(message: Message):
-    await message.answer('')
+    res = top_games()
+    await message.answer('\n'.join(res))
 
 @router.message(F.text == 'Конкретная игра')
 async def cmd_info(message: Message, state: FSMContext):
