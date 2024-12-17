@@ -4,7 +4,7 @@ from aiogram import Bot, Dispatcher
 from handlers import router
 
 
-async def main():
+async def main():  # Запуск бота
     bot = Bot(token='7680226777:AAHYDa-BxpQhiymF1Qvo-aAoC1uNfZqVnTA')
     dp = Dispatcher()
     dp.include_router(router)
